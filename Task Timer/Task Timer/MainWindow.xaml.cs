@@ -24,12 +24,26 @@ namespace Task_Timer
         public MainWindow()
         {
             InitializeComponent();
+            List<ProcessContainer> items = new List<ProcessContainer>();
             foreach (Process process in Process.GetProcesses())
             {
-                ListBoxItem item = new ListBoxItem();
-                item.Content = process.ProcessName;
-                ProcessBox.Items.Add(item);
+                items.Add(new ProcessContainer(process.ProcessName, 10));
             }
+
+            ProcessBox.ItemsSource = items;
         }
     }
+
+    public class ProcessContainer
+    {
+        public string ProcessName { get; set; }
+        public int Memory {get; set; }
+
+        public ProcessContainer(string name, int memory)
+        {
+            ProcessName = name;
+            Memory = memory;
+        }
+    }
+
 }
