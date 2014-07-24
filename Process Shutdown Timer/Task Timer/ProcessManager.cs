@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.ComponentModel;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace ProcessShutdownTimer
 {
@@ -15,7 +17,7 @@ namespace ProcessShutdownTimer
         public Dictionary<ProcessContainer, DateTime> RunningTimers
         {
             get { return runningTimers; }
-            set { runningTimers = value; }
+            set { runningTimers = value; NotifyPropertyChanged(); }
         }
         public ObservableCollection<ProcessContainer> ProcessList
         {
@@ -25,6 +27,7 @@ namespace ProcessShutdownTimer
 
         Dictionary<ProcessContainer, DateTime> runningTimers;
         ObservableCollection<ProcessContainer> processList;
+        
 
         public ProcessManager()
         {
@@ -46,7 +49,8 @@ namespace ProcessShutdownTimer
 
         public void ScheduleShutdown(ProcessContainer process, DateTime time)
         {
-            process.SetTerminationTime(time);
+            //process.SetTerminationTime(time);
+            SetTimer(process, time);
         }
 
         public bool RemoveProcess(ProcessContainer processToRemove)
@@ -54,7 +58,7 @@ namespace ProcessShutdownTimer
             //Process.GetProcessById(Id).Kill();
             if (Process.GetProcessById(processToRemove.Id).ProcessName == processToRemove.ProcessName)
             {
-                //
+                processList.Remove(processToRemove);
             }
             return true;
         }
@@ -65,6 +69,26 @@ namespace ProcessShutdownTimer
             if (handler != null)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private void SetTimer(ProcessContainer process, DateTime time)
+        {
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Tick += HandleTick;
+            timer.Interval = time - DateTime.Now;
+            timer.Tag = process;
+            timer.Start();
+        }
+
+        private void HandleTick(object sender, EventArgs e)
+        {
+            DispatcherTimer timer = sender as DispatcherTimer;
+            ProcessContainer process = timer.Tag as ProcessContainer;
+            if (timer != null && process != null)
+            {
+                timer.Stop();
+                processList.Remove(process);
             }
         }
     }

@@ -24,27 +24,11 @@ namespace ProcessShutdownTimer
         public int Memory { get; set; }
         public int Id { get; set; }
 
-        DispatcherTimer timer;
-
         public ProcessContainer(string name, int memory, int id)
         {
             ProcessName = name;
             Memory = memory;
             Id = id;
-        }
-
-        public void SetTerminationTime(DateTime time)
-        {
-            timer = new DispatcherTimer();
-            timer.Tick += HandleTick;
-            timer.Interval = time - DateTime.Now;
-            timer.Start();
-        }
-
-        public void HandleTick(object sender, EventArgs e)
-        {
-            timer.Stop();
-            MessageBox.Show("FIRED");
         }
 
         public override string ToString()
