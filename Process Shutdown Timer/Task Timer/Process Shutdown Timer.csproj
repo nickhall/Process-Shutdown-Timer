@@ -88,6 +88,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProcessContainer.cs" />
+    <Compile Include="ScheduleManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
