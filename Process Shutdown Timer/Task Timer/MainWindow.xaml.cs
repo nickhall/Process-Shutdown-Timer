@@ -52,7 +52,8 @@ namespace ProcessShutdownTimer
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (TimePickerBox.Value != null)
+            ProcessContainer selected = (ProcessContainer)ProcessBox.SelectedItem;
+            if (TimePickerBox.Value != null && selected != null)
             {
                 DateTime finalTime = TimePickerBox.Value ?? default(DateTime);
 
@@ -61,13 +62,21 @@ namespace ProcessShutdownTimer
                     finalTime += TimeSpan.FromHours(24d);
                     MessageBox.Show("Changed time: " + finalTime.ToString());
                 }
-                ProcessContainer selected = (ProcessContainer)ProcessBox.SelectedItem;
                 Manager.ScheduleShutdown(selected, finalTime);
             }
             else
             {
-                MessageBox.Show("Please enter a valid time.");
+                if (selected == null)
+                {
+                    MessageBox.Show("Please choose a process.", "Slow down, partner.");
+                }
+                else
+                {
+                    MessageBox.Show("Please enter a valid time.");
+                }
             }
+
+            Manager.ProcessList.Add(new ProcessContainer("POOP", 5, 5));
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)

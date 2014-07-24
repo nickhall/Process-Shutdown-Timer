@@ -26,8 +26,7 @@ namespace ProcessShutdownTimer
 
         DispatcherTimer timer;
 
-
-            public ProcessContainer(string name, int memory, int id)
+        public ProcessContainer(string name, int memory, int id)
         {
             ProcessName = name;
             Memory = memory;
@@ -46,7 +45,6 @@ namespace ProcessShutdownTimer
         {
             timer.Stop();
             MessageBox.Show("FIRED");
-            
         }
 
         public override string ToString()
