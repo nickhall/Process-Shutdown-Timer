@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -47,10 +48,13 @@ namespace ProcessShutdownTimer
             }
         }
 
-        public void ScheduleShutdown(ProcessContainer process, DateTime time)
+        public void ScheduleShutdown(IList processes, DateTime time)
         {
             //process.SetTerminationTime(time);
-            SetTimer(process, time);
+            foreach (ProcessContainer process in processes)
+            {
+                SetTimer(process, time);
+            }
         }
 
         public bool RemoveProcess(ProcessContainer processToRemove)

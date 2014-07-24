@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,7 +53,7 @@ namespace ProcessShutdownTimer
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ProcessContainer selected = (ProcessContainer)ProcessBox.SelectedItem;
+            IList selected = ProcessBox.SelectedItems;
             if (TimePickerBox.Value != null && selected != null)
             {
                 DateTime finalTime = TimePickerBox.Value ?? default(DateTime);
@@ -72,11 +73,9 @@ namespace ProcessShutdownTimer
                 }
                 else
                 {
-                    MessageBox.Show("Please enter a valid time.");
+                    MessageBox.Show("Please enter a valid time.", "Slo down, partner.");
                 }
             }
-
-            Manager.ProcessList.Add(new ProcessContainer("POOP", 5, 5));
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
