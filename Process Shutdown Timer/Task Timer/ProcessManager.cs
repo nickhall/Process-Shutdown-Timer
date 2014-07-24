@@ -54,6 +54,7 @@ namespace ProcessShutdownTimer
             foreach (ProcessContainer process in processes)
             {
                 SetTimer(process, time);
+                runningTimers.Add(process, time);
             }
         }
 
