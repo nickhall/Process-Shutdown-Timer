@@ -44,11 +44,7 @@ namespace ProcessShutdownTimer
 
         private void NotifyPropertyChanged(string propertyName = "")
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public override string ToString()

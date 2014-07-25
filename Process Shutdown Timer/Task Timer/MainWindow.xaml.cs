@@ -47,13 +47,17 @@ namespace ProcessShutdownTimer
 
         private bool ProcessFilter(object item)
         {
+            ProcessContainer thisItem = item as ProcessContainer;
+            if (thisItem.IsScheduled == true)
+                return false;
+
             if (String.IsNullOrEmpty(FilterInput.Text))
             {
                 return true;
             }
             else
             {
-                return ((item as ProcessContainer).ProcessName.IndexOf(FilterInput.Text, StringComparison.OrdinalIgnoreCase) >= 0);
+                return (thisItem.ProcessName.IndexOf(FilterInput.Text, StringComparison.OrdinalIgnoreCase) >= 0);
             }
         }
 
