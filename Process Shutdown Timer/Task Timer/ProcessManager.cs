@@ -13,18 +13,17 @@ using System.Windows.Data;
 
 namespace ProcessShutdownTimer
 {
-    public class ProcessManager : INotifyPropertyChanged
+    public class ProcessManager
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         public ObservableCollection<ProcessContainer> ProcessList
         {
             get { return processList; }
-            set { processList = value; NotifyPropertyChanged(); }
+            set { processList = value; }
         }
         public ObservableCollection<ProcessContainer> ScheduledList
         {
             get { return scheduledList; }
-            set { scheduledList = value; NotifyPropertyChanged(); }
+            set { scheduledList = value; }
         }
         public CollectionView ProcessView;
         public CollectionView ScheduledView;
@@ -70,14 +69,7 @@ namespace ProcessShutdownTimer
             return true;
         }
 
-        private void NotifyPropertyChanged(string propertyName = "")
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
+
 
         private void SetTimer(ProcessContainer process, DateTime time)
         {
@@ -88,7 +80,6 @@ namespace ProcessShutdownTimer
             timer.Start();
             scheduledList.Add(process);
             process.IsScheduled = true;
-            //ProcessView.Refresh();
         }
 
         private void HandleTick(object sender, EventArgs e)

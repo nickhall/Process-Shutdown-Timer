@@ -19,8 +19,9 @@ using toolkit = Xceed.Wpf.Toolkit;
 
 namespace ProcessShutdownTimer
 {
-    public class ProcessContainer
+    public class ProcessContainer : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         public string ProcessName { get; set; }
         public int Memory { get; set; }
         public int Id { get; set; }
@@ -28,7 +29,7 @@ namespace ProcessShutdownTimer
         public bool IsScheduled
         {
             get { return isScheduled; }
-            set { isScheduled = value; }
+            set { isScheduled = value; NotifyPropertyChanged(); }
         }
 
         bool isScheduled;
@@ -39,6 +40,15 @@ namespace ProcessShutdownTimer
             Memory = memory;
             Id = id;
             isScheduled = false;
+        }
+
+        private void NotifyPropertyChanged(string propertyName = "")
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         public override string ToString()
