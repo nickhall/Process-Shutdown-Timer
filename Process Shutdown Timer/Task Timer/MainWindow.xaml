@@ -9,6 +9,15 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <DataGrid x:Name="ProcessBox" SelectionMode="Extended" ScrollViewer.HorizontalScrollBarVisibility="Hidden" GridLinesVisibility="None" AutoGenerateColumns="False" IsReadOnly="True" Margin="0,0,0,33" CanUserReorderColumns="False" MinColumnWidth="50" CanUserResizeRows="False">
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsScheduled}" Value="true">
+                            <Setter Property="Foreground" Value="Red" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Process" Binding="{Binding ProcessName}" />
                 <DataGridTextColumn Header="Memory" Binding="{Binding Memory}" />

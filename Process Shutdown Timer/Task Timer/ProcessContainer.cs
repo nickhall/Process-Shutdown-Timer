@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Diagnostics;
+using System.ComponentModel;
 using toolkit = Xceed.Wpf.Toolkit;
 
 namespace ProcessShutdownTimer
@@ -23,12 +24,21 @@ namespace ProcessShutdownTimer
         public string ProcessName { get; set; }
         public int Memory { get; set; }
         public int Id { get; set; }
+        public DateTime TerminationTime { get; set; }
+        public bool IsScheduled
+        {
+            get { return isScheduled; }
+            set { isScheduled = value; }
+        }
+
+        bool isScheduled;
 
         public ProcessContainer(string name, int memory, int id)
         {
             ProcessName = name;
             Memory = memory;
             Id = id;
+            isScheduled = false;
         }
 
         public override string ToString()

@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Diagnostics;
+using System.ComponentModel;
 using toolkit = Xceed.Wpf.Toolkit;
 
 namespace ProcessShutdownTimer
@@ -24,7 +25,7 @@ namespace ProcessShutdownTimer
     /// </summary>
     public partial class MainWindow : Window
     {
-        ProcessManager Manager;
+        public ProcessManager Manager { get; set; }
 
         public MainWindow()
         {
@@ -33,10 +34,15 @@ namespace ProcessShutdownTimer
             Manager.RefreshProcessList();
 
             TimePickerBox.Value = DateTime.Now;
-            ScheduledBox.ItemsSource = Manager.RunningTimers;
+            ScheduledBox.ItemsSource = Manager.ScheduledList;
             ProcessBox.ItemsSource = Manager.ProcessList;
-            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ProcessBox.ItemsSource);
-            view.Filter = ProcessFilter;
+            
+            CollectionView processView = (CollectionView)CollectionViewSource.GetDefaultView(ProcessBox.ItemsSource);
+            CollectionView scheduledView = (CollectionView)CollectionViewSource.GetDefaultView(ScheduledBox.ItemsSource);
+            processView.Filter = ProcessFilter;
+
+            Manager.ScheduledView = scheduledView;
+            Manager.ProcessView = processView;
         }
 
         private bool ProcessFilter(object item)

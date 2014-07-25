@@ -9,31 +9,34 @@ using System.Diagnostics;
 using System.ComponentModel;
 using System.Threading;
 using System.Windows.Threading;
+using System.Windows.Data;
 
 namespace ProcessShutdownTimer
 {
-    class ProcessManager : INotifyPropertyChanged
+    public class ProcessManager : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public Dictionary<ProcessContainer, DateTime> RunningTimers
-        {
-            get { return runningTimers; }
-            set { runningTimers = value; NotifyPropertyChanged(); }
-        }
         public ObservableCollection<ProcessContainer> ProcessList
         {
             get { return processList; }
             set { processList = value; NotifyPropertyChanged(); }
         }
+        public ObservableCollection<ProcessContainer> ScheduledList
+        {
+            get { return scheduledList; }
+            set { scheduledList = value; NotifyPropertyChanged(); }
+        }
+        public CollectionView ProcessView;
+        public CollectionView ScheduledView;
 
-        Dictionary<ProcessContainer, DateTime> runningTimers;
         ObservableCollection<ProcessContainer> processList;
+        ObservableCollection<ProcessContainer> scheduledList;
         
 
         public ProcessManager()
         {
             processList = new ObservableCollection<ProcessContainer>();
-            runningTimers = new Dictionary<ProcessContainer, DateTime>();
+            scheduledList = new ObservableCollection<ProcessContainer>();
             RefreshProcessList();
         }
 
@@ -54,7 +57,6 @@ namespace ProcessShutdownTimer
             foreach (ProcessContainer process in processes)
             {
                 SetTimer(process, time);
-                runningTimers.Add(process, time);
             }
         }
 
@@ -84,6 +86,9 @@ namespace ProcessShutdownTimer
             timer.Interval = time - DateTime.Now;
             timer.Tag = process;
             timer.Start();
+            scheduledList.Add(process);
+            process.IsScheduled = true;
+            //ProcessView.Refresh();
         }
 
         private void HandleTick(object sender, EventArgs e)
@@ -94,6 +99,7 @@ namespace ProcessShutdownTimer
             {
                 timer.Stop();
                 processList.Remove(process);
+                scheduledList.Remove(process);
             }
         }
     }
