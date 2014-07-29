@@ -92,5 +92,19 @@ namespace ProcessShutdownTimer
         {
             CollectionViewSource.GetDefaultView(ProcessBox.ItemsSource).Refresh();
         }
+
+        private void Time_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            bool allow = false;
+            int input;
+            if (int.TryParse(e.Text, out input))
+            {
+                if (input >= 0)
+                {
+                    allow = true;
+                }
+            }
+            e.Handled = !allow;
+        }
     }
 }
