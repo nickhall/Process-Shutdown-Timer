@@ -77,7 +77,7 @@ namespace ProcessShutdownTimer
         {
             DispatcherTimer timer = new DispatcherTimer();
             timer.Tick += HandleTick;
-            timer.Interval = time - DateTime.Now;
+            timer.Interval = time - DateTime.Now < TimeSpan.FromSeconds(1) ? TimeSpan.FromSeconds(1) : time - DateTime.Now;
             timer.Tag = process;
             timer.Start();
             scheduledList.Add(process);
@@ -93,6 +93,7 @@ namespace ProcessShutdownTimer
                 timer.Stop();
                 processList.Remove(process);
                 scheduledList.Remove(process);
+                Process.GetProcessById(process.Id).Kill();
             }
         }
     }

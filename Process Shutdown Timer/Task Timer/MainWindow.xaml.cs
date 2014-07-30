@@ -64,35 +64,50 @@ namespace ProcessShutdownTimer
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             IList selected = ProcessBox.SelectedItems;
-            if (RadioTimePicker.IsChecked == true)
+            DateTime finalTime = new DateTime();
+            // TODO: Implement proper WPF-style validation
+            bool valid = true;
+            if (RadioTimePicker.IsChecked == true && selected.Count > 0)
             {
                 // Time Picker Box path
-            }
-            else if (RadioNumberInput.IsChecked == true)
-            {
-                // Number Input path
-            }
-            if (TimePickerBox.Value != null && selected.Count > 0)
-            {
-                DateTime finalTime = TimePickerBox.Value ?? default(DateTime);
-
-                if (TimePickerBox.Value < DateTime.Now)
+                if (TimePickerBox.Value != null)
                 {
-                    finalTime += TimeSpan.FromHours(24d);
-                    MessageBox.Show("Changed time: " + finalTime.ToString());
+                    finalTime = TimePickerBox.Value ?? default(DateTime);
+
+                    if (TimePickerBox.Value < DateTime.Now)
+                    {
+                        finalTime += TimeSpan.FromHours(24d);
+                        MessageBox.Show("Changed time: " + finalTime.ToString());
+                    }
                 }
-                Manager.ScheduleShutdown(selected, finalTime);
+                else
+                {
+                    MessageBox.Show("Please enter a valid time.", "Slow down, partner.");
+                    valid = false;
+                }
+            }
+            else if (RadioNumberInput.IsChecked == true && selected.Count > 0)
+            {
+                int hours;
+                int minutes;
+                int seconds;
+                hours = int.TryParse(Hours.Text, out hours) ? hours : 0;
+                minutes = int.TryParse(Minutes.Text, out minutes) ? minutes : 0;
+                seconds = int.TryParse(Seconds.Text, out seconds) ? seconds : 0;
+                finalTime = DateTime.Now + new TimeSpan(hours, minutes, seconds);
+                MessageBox.Show(finalTime.ToString());
             }
             else
             {
                 if (selected.Count == 0)
                 {
                     MessageBox.Show("Please choose a process.", "Slow down, partner.");
+                    valid = false;
                 }
-                else
-                {
-                    MessageBox.Show("Please enter a valid time.", "Slow down, partner.");
-                }
+            }
+            if (valid)
+            {
+                Manager.ScheduleShutdown(selected, finalTime);
             }
         }
 
