@@ -52,11 +52,13 @@ namespace ProcessShutdownTimer
 
         public void ScheduleShutdown(IList processes, DateTime time)
         {
-            //process.SetTerminationTime(time);
+
             foreach (ProcessContainer process in processes)
             {
                 SetTimer(process, time);
             }
+
+            ProcessView.Refresh();
         }
 
         public bool RemoveProcess(ProcessContainer processToRemove)

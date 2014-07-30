@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Diagnostics;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using toolkit = Xceed.Wpf.Toolkit;
 
 namespace ProcessShutdownTimer
@@ -29,7 +30,7 @@ namespace ProcessShutdownTimer
         public bool IsScheduled
         {
             get { return isScheduled; }
-            set { isScheduled = value; NotifyPropertyChanged(); }
+            set { isScheduled = value; NotifyPropertyChanged(this.ToString()); }
         }
 
         bool isScheduled;
@@ -42,9 +43,11 @@ namespace ProcessShutdownTimer
             isScheduled = false;
         }
 
-        private void NotifyPropertyChanged(string propertyName = "")
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public override string ToString()

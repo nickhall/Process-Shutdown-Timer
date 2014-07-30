@@ -29,16 +29,16 @@
             </TextBox.ToolTip>
         </TextBox>
         <DockPanel Grid.Column="1" Margin="5,0,0,0" >
-            <RadioButton VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" DockPanel.Dock="Top" IsChecked="True">
+            <RadioButton Name="RadioTimePicker" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" DockPanel.Dock="Top" IsChecked="True">
                 <xctk:TimePicker Name="TimePickerBox" Margin="0" Format="LongTime" VerticalAlignment="Center" />
             </RadioButton>
-            <RadioButton VerticalContentAlignment="Center" Margin="0,5,0,0" DockPanel.Dock="Top">
+            <RadioButton Name="RadioNumberInput" VerticalContentAlignment="Center" Margin="0,5,0,0" DockPanel.Dock="Top">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox Name="Hours" Width="30" VerticalAlignment="Center" PreviewTextInput="Time_PreviewTextInput" >0</TextBox>
+                    <TextBox ToolTip="Hours" Name="Hours" Width="30" VerticalAlignment="Center" PreviewTextInput="Time_PreviewTextInput" MaxLength="2">0</TextBox>
                     <Label>Hours</Label>
-                    <TextBox Name="Minutes" Width="30" VerticalAlignment="Center" PreviewTextInput="Time_PreviewTextInput">0</TextBox>
+                    <TextBox ToolTip="Minutes" Name="Minutes" Width="30" VerticalAlignment="Center" PreviewTextInput="Time_PreviewTextInput" MaxLength="2">0</TextBox>
                     <Label>Minutes</Label>
-                    <TextBox Name="Seconds" Width="30" VerticalAlignment="Center" PreviewTextInput="Time_PreviewTextInput">0</TextBox>
+                    <TextBox ToolTip="Seconds" Name="Seconds" Width="30" VerticalAlignment="Center" PreviewTextInput="Time_PreviewTextInput" MaxLength="3">0</TextBox>
                     <Label>Seconds</Label>
                 </StackPanel>
             </RadioButton>

@@ -64,7 +64,15 @@ namespace ProcessShutdownTimer
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             IList selected = ProcessBox.SelectedItems;
-            if (TimePickerBox.Value != null && selected != null)
+            if (RadioTimePicker.IsChecked == true)
+            {
+                // Time Picker Box path
+            }
+            else if (RadioNumberInput.IsChecked == true)
+            {
+                // Number Input path
+            }
+            if (TimePickerBox.Value != null && selected.Count > 0)
             {
                 DateTime finalTime = TimePickerBox.Value ?? default(DateTime);
 
@@ -77,13 +85,13 @@ namespace ProcessShutdownTimer
             }
             else
             {
-                if (selected == null)
+                if (selected.Count == 0)
                 {
                     MessageBox.Show("Please choose a process.", "Slow down, partner.");
                 }
                 else
                 {
-                    MessageBox.Show("Please enter a valid time.", "Slo down, partner.");
+                    MessageBox.Show("Please enter a valid time.", "Slow down, partner.");
                 }
             }
         }
